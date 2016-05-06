@@ -1,0 +1,18 @@
+# This file contains definitions that were simply part of my .bashrc
+
+EMULAB_PROJECT=comp150.emulab.net
+EMULAB_EXPERIMENT=cassandra-testing
+
+emulab () {
+        N=1 ; test -n "$1" && N="$1" ; shift ;
+        ssh carter@node-$N.$EMULAB_EXPERIMENT.$EMULAB_PROJECT $@ ;
+}
+
+emu-startup () {
+        if [ -z "$1" ]; then
+                >&2 echo "Usage: emu-startup <node-count>" ; return 1
+        fi
+        for i in `seq $1`; do
+                emulab $i 'bash /proj/comp150/cassandra/startup.sh '$1 $2' >& /tmp/startup.log &'
+        done
+}

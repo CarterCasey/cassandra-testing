@@ -1,0 +1,13 @@
+#!/bin/bash
+
+case $1 in 
+	-public ) pattern="155.*"  ;;
+	-private) pattern='10.*'   ;;
+	-local  ) pattern='127.*'  ;;
+	*       ) pattern='*'      ;;
+esac
+
+for ip in `ifconfig | grep "inet addr" | perl -pe 's{.*inet addr:([0-9.]+)\s+.*}{$1}'`; do
+	case $ip in $pattern) echo $ip ;; esac
+done
+

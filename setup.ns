@@ -1,0 +1,17 @@
+set ns [new Simulator]
+source tb_compat.tcl
+
+set node_count 5
+set lan ""
+
+for {set i 1} {$i <= $node_count} {incr i} {
+	set node($i) [$ns node]
+	append lan "$node($i) "
+	tb-set-node-os $node($i) UBUNTU14-64-STD
+}
+
+set big-lan [$ns make-lan "$lan" * 0ms]
+
+$ns rtproto Static
+
+$ns run
